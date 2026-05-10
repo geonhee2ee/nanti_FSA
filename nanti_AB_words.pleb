@@ -1,0 +1,58 @@
+ 
+=A{/A} =a{/a} =As{/As}
+=B{/B} =b{/b} =Bs{/Bs}	
+=C{/C} =c{/c} =Cs{/Cs}
+=D{/D} =d{/d} =Ds{/Ds}
+=E{/E} =e{/e} =Es{/Es}
+=F{/F} =f{/f} =Fs{/Fs}
+=G{/G} =g{/g} =Gs{/Gs}
+=H{/H} =h{/h} =Hs{/Hs}
+=I{/I} =i{/i} =Is{/Is}
+=J{/J} =j{/j} =Js{/Js}
+=K{/K} =k{/k} =Ks{/Ks}
+=L{/L} =l{/l} =Ls{/Ls}
+=p{/p} =P{/P} #p is the prosodic boundary, and s marks the primary stress
+
+=word002 %||%< P As  b p>  
+=word003 %||%< P b  Bs  b  p b >  
+=word004 %||%< P b  Bs  b  p b >  
+=word005 %||%< P a  A  a  As  b p>  
+=word006 %||%< P b  B  b  Bs  b  p b >  
+=word007 %||%< P a  A  a  As  a b p>  
+=word027 %||%< P B  b  Bs  a a p b >  
+=word033 %||%< P b  Bs  b  p b >  
+=word065 %||%< P A  a  Bs  a b p>  
+=word068 %||%< P a  B  b  Bs  b p>  
+=word079 %||%< P A  a  Bs  b p>  
+=word080 %||%< P b  Bs  b  a  p b >  
+=word081 %||%< P a  Bs  b  a p>  
+=word092 %||%< P b  Bs  b  a  p b >  
+
+=word002x %||%< P a  Bs p>  
+=word003x %||%< P Bs  b  b  p b >
+=word004x %||%< P b  b  Bs  p b > 
+=word005x %||%< P a  As  a  A  b p> 
+=word006x %||%< P b  Bs  b  B  b  p b > 
+=word007x %||%< P a  As  a  A  a b p> 
+=word027x %||%< P Bs  b  B  a a p b > 
+=word033x %||%< P Bs  b  b  p b > 
+=word065x %||%< P a  A  Bs  a b p>  
+=word068x %||%< P a  B  Bs  b  b p>   
+=word079x %||%< P a  As  Bs  b p>  
+=word080x %||%< P b  Bs  b  A  p b >  
+=word081x %||%< P a  B  Bs  a p>  
+=word092x %||%< P B  b  Bs  a  p b >  
+
+=truewords \/{word002, word003, word004, word005, word006, word007, word027, word033, word065, word068, word079, word080, word081, word092}
+
+=truewords1 \/{word002, word003, word004, word005}  
+=truewords2 \/{word006, word007, word027, word033}  
+=truewords3 \/{word065, word068, word079, word080}  
+=truewords4 \/{word081, word092}  
+
+=falsewords \/{word002x, word003x, word004x, word005x, word006x, word007x, word027x, word033x, word065x, word068x, word079x, word080x, word081x, word092x}
+
+=falsewords1 \/{word002x, word003x, word004x, word005x}  
+=falsewords2 \/{word006x, word007x, word027x, word033x}  
+=falsewords3 \/{word065x, word068x, word079x, word080x}  
+=falsewords4 \/{word081x, word092x}  

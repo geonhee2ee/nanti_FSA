@@ -1,0 +1,210 @@
+# This file provides a way to think about the stress pattern of Nanti
+# with a finite state acceptor.
+
+# This part defines the symbols. Note a capital letter indicates a
+# stressed syllable and a lowercase letter indicates an unstressed
+# one.
+
+=A{/A} =a{/a} =As{/As}
+=B{/B} =b{/b} =Bs{/Bs}
+=C{/C} =c{/c} =Cs{/Cs}	
+
+
+=P{/P} =p{/p} #p is the prosodic boundary
+
+# The following defines natural classes by weight/prominence. So A/a
+# are the least prominent syllables and L/l are the most prominent
+# syllables.
+
+=w01 \/{%||%<A>, %||%<As>, %||%<a>}
+=w02 \/{%||%<B>, %||%<Bs>, %||%<b>}
+=w03 \/{%||%<C>, %||%<Cs>, %||%<c>}
+
+# Here are natural classes for stressed symbols and unstressed symbols.
+# (Plebby will not recognize expressions split across multiple lines.)
+
+=primary \/{%||%<As>, %||%<Bs>, %||%<Cs>}
+=head \/{%||%<A>, %||%<B>, %||%<C>}
+=unstressed \/{%||%<a>, %||%<b>, %||%<c>}
+
+# Trochees and iambic disyllabic feet are defined generally.
+
+=trochee @{\/{head, primary}, unstressed}
+
+=iamb @{unstressed, \/{head, primary}}
+
+
+
+# In Nanti, we care whether the left or right syllable in a foot is
+# more prominent. `promleft` is all disyllabic feet where the left
+# syllable is more prominent than the right syllable.
+
+=promleft \/{@{w03, w02}, @{w03, w01}, @{w02, w01}}
+
+# `promright` is all disyllabic feet where the right syllable is more
+# prominent than the left one.
+
+=promright -promleft # note `-` means 'reverse it' in plebby
+
+
+# Finally here are all the disyllabic feet in plebby where the
+# syllables have equal prominence.
+
+=promeq  \/{@{w03, w03}, @{w02, w02}, @{w01, w01}}
+
+# Typical trochees in Nanti are trochees with the leftmost syllable
+# stressed.
+=goodTrochee /\{promleft, trochee}
+=badTrochee /\{promright, trochee}
+
+# Typical iambs in Nanti are trochees with the rightmost syllable
+# stressed.
+=goodIamb /\{promright, iamb}
+=badIamb /\{promleft, iamb}
+
+# When the two syllables have equal prominence, they can be either
+# trochees or iambs. It depends on their distribution.
+
+=eqpromTrochee /\{promeq,trochee}
+=eqpromIamb /\{promeq,iamb}
+
+
+# The last part looks like this.
+
+=ending @{%||%<p>, *unstressed}
+
+# Next we want to build an acceptor using `goodTrochee`, `goodIamb`, `eqpromTrochee`, and `eqpromIamb`.
+
+#All the possible combination of feet in a word (the so-called Sigma-star)
+
+
+# for the rest of cases where they are two or more feet in a prosodic word boundary
+
+=footprwd \/{eqpromTrochee, goodTrochee, goodIamb, eqpromIamb}
+=sigmaprwd *footprwd
+
+=sigmaprwdinitial @{%||%<P>, *footprwd}
+
+=btwgoodIambgoodTrochee @{sigmaprwdinitial, goodIamb, *eqpromIamb, eqpromTrochee, *eqpromIamb, goodTrochee}
+
+=InitialEqpromTrochee @{%||%<P>, eqpromTrochee, goodIamb}
+
+=FinalIamb @{\/{goodIamb, eqpromIamb}, %||%<p>}# need to put this somewhere 
+
+=Clash @{sigmaprwdinitial, eqpromIamb, *\/{eqpromTrochee, goodTrochee}}
+=ClashInitial @{%||%<P>, eqpromIamb, +\/{eqpromTrochee, goodTrochee}}
+#=ClashGoodTrocheeIamb @{%||%<P>, goodTrochee, eqpromIamb, *footprwd}
+
+=goodTrocheeHead /\{goodTrochee, @{head, unstressed}}
+=ClashGoodTrocheeIamb @{%||%<P>, goodTrocheeHead, eqpromIamb, *footprwd}
+
+=ValidWordsFinal /\{!InitialEqpromTrochee,  @{sigmaprwdinitial, sigmaprwd}, !btwgoodIambgoodTrochee, !ClashInitial, !ClashGoodTrocheeIamb}
+
+
+################## NEW stress assignment (in progress) ###########################
+
+#Word-level primary stress condition: only one primary stress in a word
+
+#Blocks two occurrences of the same primary stress marker
+=notwosameprimary /\{~<As, As>, ~<Bs, Bs>, ~<Cs, Cs>} 
+
+#Blocks two different primary stress markers from co-occurring
+=notwodiffprimary /\{~<As, Bs>, ~<As, Cs>, ~<Bs, Cs>}
+
+#prominence restriction: the syllable X is the most prominent, then that becomes primary stress. If there are same prominent heads, then the rightmost one becomes primary
+
+#If As is primary, no other stress head (A, B, C) or higher prominence unstressed (b, c) appears anywhere in the word, and As is the rightmost A
+=prominentA /\{~<As, A>, ~<As, B>, ~<As, C>, ~<As, b>, ~<As, c>, ~<b, As>, ~<c, As>, ~<B, As>, ~<C, As>} 
+
+# If Bs is primary: no C-level symbol appears anywhere, and Bs is the rightmost B
+=prominentB /\{~<Bs, B> , ~<Bs, C>, ~<Bs, c>, ~<c, Bs>, ~<C, Bs>, ~<Bs, A>}
+
+=prominentC ~<Cs, C> 
+# If A is the prominence ceiling: no higher prominence symbol (B, C, b, c) follows any A
+=noHigherAfterA /\{~<A, B>, ~<A, C>, ~<A, b>, ~<A, c>}
+
+# If B is the prominence ceiling: no higher prominence symbol (C, c) follows any B
+=noHigherAfterB /\{~<B, C>, ~<B,c>} 
+
+# A is the ceiling: no symbol from {B, C, b, c} appears anywhere relative to A (symmetric)
+=noHigherAnywhereA /\{noHigherAfterA, -noHigherAfterA}
+
+# B is the ceiling: no symbol from {C, c} appears anywhere relative to B (symmetric)
+=noHigherAnywhereB /\{noHigherAfterB, -noHigherAfterB}
+
+# C is the ceiling: no restrictions since C is the top of the prominence scale -- accepts any string
+=noHigherAnywhereC *\/{%||%<A>, %||%<a>, %||%<B>, %||%<b>, %||%<C>, %||%<Cs>, %||%<c>, %||%<P>, %||%<p>}
+
+# Selects the appropriate prominence ceiling context for the word
+=prominencecontext \/{noHigherAnywhereA, noHigherAnywhereB, noHigherAnywhereC}
+
+#This is for the stress configuration of a word -- there should be at least one foot with primary stress and then the rest of feet with secondary stresses 
+=trocheeprimary @{primary, unstressed}
+=trocheeprimaryStrict /\{promleft, @{primary, unstressed}}
+=iambprimary @{unstressed, primary}
+=trocheehead @{head, unstressed}
+=iambhead @{unstressed, head}
+
+# This is that there are zero or more feet with secondary stress before and after the foot with primary stress 
+# A prosodic word has zero or more secondary feet, exactly one primary foot, zero or more secondary feet, and optionally trailing unstressed syllables
+=haveprimary @{sigmaprwdinitial, */\{sigmaprwd,\/{trocheehead, iambhead}}, \/{trocheeprimary, iambprimary}, */\{sigmaprwd, \/{trocheehead, iambhead}},*unstressed}
+=haveprimaryStrict @{sigmaprwdinitial, */\{sigmaprwdinitial,\/{trocheehead, iambhead}}, \/{trocheeprimaryStrict, iambprimary}, */\{sigmaprwd, \/{trocheehead, iambhead}}, *unstressed}
+
+#This predicate includes all the constraints for the stress assginment 
+=newprimary /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominentC, prominencecontext, haveprimary}
+
+# Restricts trochee-headed primaries to promleft configurations
+=newprimaryStrict /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominentC, prominencecontext, haveprimaryStrict}
+
+##############################################################
+
+
+# Type 1: stress in a word that has one foot e.g., (A a)]
+# in a one-foot length word, the first syllable is stressed 
+=singlefoot \/{goodTrochee, eqpromTrochee, badTrochee}
+=oneWordPrimary \/{/\{@{primary, unstressed}, singlefoot}, /\{@{unstressed, primary}, singlefoot}}
+=oneWordFinal @{%||%<P>, oneWordPrimary, ending}
+
+
+# stress in a word that has odd number of syllables without equal prominence-- one unfooted syllable before pwrd 
+
+=OddNonEqStress /\{newprimaryStrict, ValidWordsFinal}
+=OddNonEqStressFinal @{OddNonEqStress, unstressed, ending}
+
+# Type 2-3: if all syllables are the same prominence in even-number of syllables without exhaustive footing: the penult is not the strongest 
+#noFinalFoot restricts the prominence of unfooted penult in non-exhaustive footing words
+=noFinalFoot /\{~<As, b>, ~<As, c>, ~<Bs, c>}
+=newprimary2 /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominentC, prominencecontext, haveprimaryStrict, noFinalFoot}
+
+
+# Even case 1: exhaustive footing
+
+=exactlyTwoFeet @{footprwd, footprwd}
+=threeOrMoreFeet @{footprwd, footprwd, footprwd, *footprwd}
+=penultExtraB /\{~<B, Bs>, ~<b, Bs>}
+=penultExtraC /\{~<C, Cs>, ~<c, Cs>}
+=penultExtraA /\{~<A, As>, ~<a, As>}
+
+# In the level X, no other form of X cannot appear before Xs 
+=sameLevelSecondaryC /\{~<C, Cs>, ~<c, Cs>}
+=sameLevelSecondaryB /\{~<B, Bs>, ~<b, Bs>}
+=sameLevelSecondaryA /\{~<A, As>, ~<a, As>}
+=bansameLevelSecondary /\{penultExtraA, penultExtraB, penultExtraC}
+
+=EvenNonEqTwoFeet /\{ValidWordsFinal, @{sigmaprwdinitial, exactlyTwoFeet}, bansameLevelSecondary}
+=EvenNonEqThreeOrMoreFeet /\{ValidWordsFinal, @{sigmaprwdinitial, threeOrMoreFeet}}
+=EvenNonEq \/{EvenNonEqTwoFeet, EvenNonEqThreeOrMoreFeet}
+
+=EvenNonEqStress /\{newprimary, EvenNonEq}
+=EvenNonEqStressFinal @{EvenNonEqStress, ending}
+
+
+# Even case 2: non-exhaustive footing
+=EvenNonEqNoFinalFoot @{ValidWordsFinal, unstressed}
+=EvenNonEqNoFinalFootStress /\{newprimary2, EvenNonEqNoFinalFoot}
+=EvenNonEqNoFinalFootStressFinal @{EvenNonEqNoFinalFootStress, unstressed, ending}
+
+# Union the machine
+
+=machine \/{oneWordFinal, OddNonEqStressFinal, EvenNonEqStressFinal, EvenNonEqNoFinalFootStressFinal}
+
