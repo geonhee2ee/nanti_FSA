@@ -75,19 +75,19 @@
 
 =ending @{%||%<p>, *unstressed}
 
+
+
+###################################################################
+
+# Next we want to build an acceptor using `goodTrochee`, `goodIamb`, `eqpromTrochee`, and `eqpromIamb`.
+
 #All the possible combination of feet in a word (the so-called Sigma-star)
 
-# for one-footed words as they can be badTrochee where the prominence is Iamb but the stress is assigned to Trochee (As b)] due to no stress in the ultima 
-
-=foot \/{eqpromTrochee, goodTrochee, badTrochee, badIamb, goodIamb, eqpromIamb}
-=sigma *foot
 
 # for the rest of cases where they are two or more feet in a prosodic word boundary
 
 =footprwd \/{eqpromTrochee, goodTrochee, goodIamb, eqpromIamb}
 =sigmaprwd *footprwd
-
-###################################################################
 
 =sigmaprwdinitial @{%||%<P>, *footprwd}
 
@@ -104,10 +104,7 @@
 =goodTrocheeHead /\{goodTrochee, @{head, unstressed}}
 =ClashGoodTrocheeIamb @{%||%<P>, goodTrocheeHead, eqpromIamb, *footprwd}
 
-=ValidWords2 /\{sigmaprwd, !btwgoodIambgoodTrochee, !Clash}
 =ValidWordsFinal /\{!InitialEqpromTrochee,  @{sigmaprwdinitial, sigmaprwd}, !btwgoodIambgoodTrochee, !ClashInitial, !ClashGoodTrocheeIamb}
-
-
 
 
 
@@ -135,11 +132,11 @@
 # Bs is the rightmost B
 =prominentB /\{~<Bs, B>}
 
-# If A is the prominence ceiling: no higher prominence symbol (B, C, b, c) 
+# If A is the prominence ceiling: no higher prominence symbol (B, b) 
 # follows any A
 =noHigherAfterA /\{~<A, B>, ~<A, b>}
 
-# A is the ceiling: no symbol from {B, C, b, c} appears anywhere 
+# A is the ceiling: no symbol from {B, b} appears anywhere 
 # relative to A (symmetric)
 =noHigherAnywhereA /\{noHigherAfterA, -noHigherAfterA}
 
@@ -171,21 +168,15 @@
 
 #This predicate includes all the constraints for the stress assginment 
 =newprimary /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominencecontext, haveprimary}
+
+# Restricts trochee-headed primaries to promleft configurations
 =newprimaryStrict /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominencecontext, haveprimaryStrict}
 ##############################################################
 
 
-# Type 1: stress in a word that has one foot e.g., (A a)]
-# in a one-foot length word, the first syllable is stressed 
 =singlefoot \/{goodTrochee, eqpromTrochee, badTrochee}
-=oneWordPrimary /\{@{primary, unstressed}, singlefoot}
+=oneWordPrimary \/{/\{@{primary, unstressed}, singlefoot}, /\{@{unstressed, primary}, singlefoot}}
 =oneWordFinal @{%||%<P>, oneWordPrimary, ending}
-
-# Now let's compute the most prominent syllable and change it into the primary syllable 
-# stress in a word that has odd number of syllables with equal prominence -- one unfooted syllable before pwrd 
-#=OddEq +eqpromIamb
-#=OddEqStress /\{OddEq, newprimary} # a A . a ]
-#=OddEqStressFinal @{OddEqStress, unstressed, ending} #subsumed by OddNonEqStressFinal
 
 
 # stress in a word that has odd number of syllables without equal prominence-- one unfooted syllable before pwrd 
@@ -193,40 +184,29 @@
 =OddNonEqStress /\{newprimaryStrict, ValidWordsFinal}
 =OddNonEqStressFinal @{OddNonEqStress, unstressed, ending}
 
-
-# Type 2-2: even-number of syllables with exhaustive footing: 
-# the penult is the strongest
-#=EvenEq +eqpromTrochee #--subsumed by even3 
-#=EvenEqStress /\{newprimary, EvenEq}#--subsumed by EvenNonEqStressFinal
-#=EvenEqStressFinal @{Even1, ending}
-
-# Type 2-3: if all syllables are the same prominence 
-# in even-number of syllables without exhaustive footing: 
-# the penult is not the strongest 
-
-# noFinalFoot restricts the prominence of unfooted penult in non-exhaustive footing words and this is added for Even number of syllables with non-exhaustive footing 
-# For instance, for a word "b B c Cs a a p", we only need to consider whether the penult is prominent than the primary stress. For that constraint, we have 'noFinalFoot' to allow not to have any prominent syllable in the penult (GL: I guess "noFinalFoot" won't work because they are already defined in one of the stress constraints
+# Type 2-3: if all syllables are the same prominence in even-number of syllables without exhaustive footing: the penult is not the strongest 
+#noFinalFoot restricts the prominence of unfooted penult in non-exhaustive footing words
 =noFinalFoot ~<As, b>
 =newprimary2 /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominencecontext, haveprimaryStrict, noFinalFoot}
 
-#=EvenEqNoFinalFoot @{+eqpromIamb, unstressed}
-#=EvenEqNoFinalFootStress /\{EvenEqNoFinalFoot, newprimary2}
-#=EvenEqNoFinalFootFinal @{EvenEqNoFinalFootStress, unstressed, ending} #-subsumed by EvenNonEqNoFinalFoot
 
 # Even case 1: exhaustive footing
 
 =exactlyTwoFeet @{footprwd, footprwd}
 =threeOrMoreFeet @{footprwd, footprwd, footprwd, *footprwd}
-
 =penultExtraB /\{~<B, Bs>, ~<b, Bs>}
 =penultExtraA /\{~<A, As>, ~<a, As>}
-=penultExtrametrical /\{penultExtraA, penultExtraB}
 
-=EvenNonEqTwoFeet /\{ValidWordsFinal, @{sigmaprwdinitial, exactlyTwoFeet}, penultExtrametrical}
+# In the level X, no other form of X cannot appear before Xs 
+=sameLevelSecondaryB /\{~<B, Bs>, ~<b, Bs>}
+=sameLevelSecondaryA /\{~<A, As>, ~<a, As>}
+=bansameLevelSecondary /\{penultExtraA, penultExtraB}
+
+=EvenNonEqTwoFeet /\{ValidWordsFinal, @{sigmaprwdinitial, exactlyTwoFeet}, bansameLevelSecondary}
 =EvenNonEqThreeOrMoreFeet /\{ValidWordsFinal, @{sigmaprwdinitial, threeOrMoreFeet}}
 =EvenNonEq \/{EvenNonEqTwoFeet, EvenNonEqThreeOrMoreFeet}
-=EvenNonEqStress /\{newprimary, EvenNonEq}
 
+=EvenNonEqStress /\{newprimary, EvenNonEq}
 =EvenNonEqStressFinal @{EvenNonEqStress, ending}
 
 
@@ -238,5 +218,4 @@
 # Union the machine
 
 =machine \/{oneWordFinal, OddNonEqStressFinal, EvenNonEqStressFinal, EvenNonEqNoFinalFootStressFinal}
-
 

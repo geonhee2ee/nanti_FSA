@@ -1,0 +1,24 @@
+Last login: Sat May  9 21:31:13 on ttys000
+(base) geonhee@igeonhuis-MacBook-Air nanti_FSA % plebby
+plebby, version 1.3: https://hackage.haskell.org/package/language-toolkit
+:help for help
+> :import nanti_AB.pleb
+> :import nanti_AB_words.pleb
+> :subset truewords machine
+True
+> :subset falsewords ~machine
+True
+> :quit
+(base) geonhee@igeonhuis-MacBook-Air nanti_FSA % plebby
+plebby, version 1.3: https://hackage.haskell.org/package/language-toolkit
+:help for help
+> :import nanti_AC.pleb
+> :import nanti_AC_words.pleb
+> :subset truewords machine
+True
+> :subset falsewords ~machine
+True
+> 
+
+
+
