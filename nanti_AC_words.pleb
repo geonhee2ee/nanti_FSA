@@ -14,8 +14,8 @@
 =word007 %||%< P a  A  a  As  a b p>  
 =word008 %||%< P B  b  A  a  Cs  c p>  
 =word009 %||%< P B  b  Cs  b c p b >  
-=word010 %||%< P b  C  b  B  Cs  c p> 
-=word011 %||%< P b  C  b  B  Cs  a p>
+#=word010 %||%< P b  C  b  B  Cs  c p> 
+#=word011 %||%< P b  C  b  B  Cs  a p>
 =word012 %||%< P C  b  a  B  a  B  Cs  b p> 
 =word015 %||%< P C  a b Cs  b  p b >  
 =word016 %||%< P C  a a Cs  b  p b >  
@@ -60,8 +60,8 @@
 =word007x %||%< P a  As  a  A  a b p> 
 =word008x %||%< P b  B  A  a  Cs  c p>  
 =word009x %||%< P B  b  c  Bs c p b > 
-=word010x %||%< P b  Cs  b  B  C  c p>
-=word011x %||%< P B  c  b  B  Cs  a p>
+#=word010x %||%< P b  Cs  b  B  C  c p>
+#=word011x %||%< P B  c  b  B  Cs  a p>
 =word012x %||%< P C  b  a  B  a  Bs  C  b p> 
 =word015x %||%< P Cs  a b C  b  p b > 
 =word016x %||%< P C  a As c  b  p b > 
@@ -97,11 +97,11 @@
 =word113x %||%<P c Bs b b p>
 
 
-=truewords \/{word001, word002, word003, word004, word005, word006, word007, word008, word009, word010, word011, word012, word015, word016, word017, word018, word019, word022, word024, word026, word027, word031, word032, word033, word051, word052, word053, word065, word068, word069, word074, word075, word076, word077, word078, word079, word080, word081, word092, word093, word094, word095, word104, word113 }
+=truewords \/{word001, word002, word003, word004, word005, word006, word007, word008, word009,  word012, word015, word016, word017, word018, word019, word022, word024, word026, word027, word031, word032, word033, word051, word052, word053, word065, word068, word069, word074, word075, word076, word077, word078, word079, word080, word081, word092, word093, word094, word095, word104, word113 }
 
 =truewords1 \/{word001, word002, word003, word004, word005}  
-=truewords2 \/{word006, word007, word008, word009, word010}  
-=truewords3 \/{word011, word012, word015, word016, word017}  
+=truewords2 \/{word006, word007, word008, word009}  
+=truewords3 \/{word012, word015, word016, word017}  
 =truewords4 \/{word018, word019, word022, word024, word026}  
 =truewords5 \/{word027, word031, word032, word033, word051}  
 =truewords6 \/{word052, word053, word065, word068, word069}  
@@ -109,11 +109,11 @@
 =truewords8 \/{word079, word080, word081, word092, word093}  
 =truewords9 \/{word094, word095, word104, word113}  
 
-=falsewords \/{word001x, word002x, word003x, word004x, word005x, word006x, word007x, word008x, word009x, word010x, word011x, word012x, word015x, word016x, word017x, word018x, word019x, word022x, word024x, word026x, word027x, word031x, word032x, word033x, word051x, word052x, word053x, word065x, word068x, word069x, word074x, word075x, word076x, word077x, word078x, word079x, word080x, word081x, word092x, word093x, word094x, word095x, word104x, word113x }
+=falsewords \/{word001x, word002x, word003x, word004x, word005x, word006x, word007x, word008x, word009x, word012x, word015x, word016x, word017x, word018x, word019x, word022x, word024x, word026x, word027x, word031x, word032x, word033x, word051x, word052x, word053x, word065x, word068x, word069x, word074x, word075x, word076x, word077x, word078x, word079x, word080x, word081x, word092x, word093x, word094x, word095x, word104x, word113x }
 
 =falsewords1 \/{word001x, word002x, word003x, word004x, word005x}  
-=falsewords2 \/{word006x, word007x, word008x, word009x, word010x}  
-=falsewords3 \/{word011x, word012x, word015x, word016x, word017x}  
+=falsewords2 \/{word006x, word007x, word008x, word009x}  
+=falsewords3 \/{word012x, word015x, word016x, word017x}  
 =falsewords4 \/{word018x, word019x, word022x, word024x, word026x}  
 =falsewords5 \/{word027x, word031x, word032x, word033x, word051x}  
 =falsewords6 \/{word052x, word053x, word065x, word068x, word069x}  
