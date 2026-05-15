@@ -1,0 +1,24 @@
+Last login: Mon May 11 20:45:56 on ttys000
+(base) geonhee@igeonhuis-MacBook-Air nanti_FSA % plebby
+plebby, version 1.3: https://hackage.haskell.org/package/language-toolkit
+:help for help
+> :import nanti_AB.pleb
+> :isSF machine
+True
+> :isSP machine
+False
+> :isSL machine
+False
+> :isPT machine
+False
+> :isLPT machine
+False
+> :isTSL machine
+False
+> :isTLT machine
+False
+> :isTDef machine
+False
+> :isMTDef machine
+False
+

@@ -14,8 +14,6 @@
 =word007 %||%< P a  A  a  As  a b p>  
 =word008 %||%< P B  b  A  a  Cs  c p>  
 =word009 %||%< P B  b  Cs  b c p b >  
-#=word010 %||%< P b  C  b  B  Cs  c p> 
-#=word011 %||%< P b  C  b  B  Cs  a p>
 =word012 %||%< P C  b  a  B  a  B  Cs  b p> 
 =word015 %||%< P C  a b Cs  b  p b >  
 =word016 %||%< P C  a a Cs  b  p b >  
@@ -50,7 +48,7 @@
 =word104 %||%< P a  B  Cs  c p> 
 =word113 %||%<P Cs b b b p>
 
-# words that should reterun false in machine 
+# words that should return false in machine 
 =word001x %||%< P c  Cs p>  
 =word002x %||%< P a  Bs p> 
 =word003x %||%< P Bs  b  b  p b >
@@ -60,8 +58,6 @@
 =word007x %||%< P a  As  a  A  a b p> 
 =word008x %||%< P b  B  A  a  Cs  c p>  
 =word009x %||%< P B  b  c  Bs c p b > 
-#=word010x %||%< P b  Cs  b  B  C  c p>
-#=word011x %||%< P B  c  b  B  Cs  a p>
 =word012x %||%< P C  b  a  B  a  Bs  C  b p> 
 =word015x %||%< P Cs  a b C  b  p b > 
 =word016x %||%< P C  a As c  b  p b > 

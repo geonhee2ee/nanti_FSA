@@ -85,16 +85,21 @@
 
 =sigmaprwdinitial @{%||%<P>, *footprwd}
 
+#banned sequence between goodIamb and goodTrochee
 =btwgoodIambgoodTrochee @{sigmaprwdinitial, goodIamb, *eqpromIamb, eqpromTrochee, *eqpromIamb, goodTrochee}
 
+#Banned sequence in the beginning of the prosodic word with an equal prominence trochee if a following goodIamb is there
 =InitialEqpromTrochee @{%||%<P>, eqpromTrochee, goodIamb}
 
 =FinalIamb @{\/{goodIamb, eqpromIamb}, %||%<p>}# need to put this somewhere 
 
 =Clash @{sigmaprwdinitial, eqpromIamb, *\/{eqpromTrochee, goodTrochee}}
+
+#banned sequence of initial equal prominence iamb followed by trochaic stress
 =ClashInitial @{%||%<P>, eqpromIamb, +\/{eqpromTrochee, goodTrochee}}
 #=ClashGoodTrocheeIamb @{%||%<P>, goodTrochee, eqpromIamb, *footprwd}
 
+#
 =goodTrocheeHead /\{goodTrochee, @{head, unstressed}}
 =ClashGoodTrocheeIamb @{%||%<P>, goodTrocheeHead, eqpromIamb, *footprwd}
 
@@ -117,7 +122,7 @@
 =prominentA /\{~<As, A>, ~<As, B>, ~<As, C>, ~<As, b>, ~<As, c>, ~<b, As>, ~<c, As>, ~<B, As>, ~<C, As>} 
 
 # If Bs is primary: no C-level symbol appears anywhere, and Bs is the rightmost B
-=prominentB /\{~<Bs, B> , ~<Bs, C>, ~<Bs, c>, ~<c, Bs>, ~<C, Bs>, ~<Bs, A>}
+=prominentB /\{~<Bs, B> , ~<Bs, C>, ~<Bs, c>, ~<c, Bs>, ~<C, Bs>}
 
 =prominentC ~<Cs, C> 
 # If A is the prominence ceiling: no higher prominence symbol (B, C, b, c) follows any A
@@ -181,9 +186,6 @@
 
 =exactlyTwoFeet @{footprwd, footprwd}
 =threeOrMoreFeet @{footprwd, footprwd, footprwd, *footprwd}
-=penultExtraB /\{~<B, Bs>, ~<b, Bs>}
-=penultExtraC /\{~<C, Cs>, ~<c, Cs>}
-=penultExtraA /\{~<A, As>, ~<a, As>}
 
 # In the level X, no other form of X cannot appear before Xs 
 =sameLevelSecondaryC /\{~<C, Cs>, ~<c, Cs>}
