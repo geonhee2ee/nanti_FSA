@@ -106,7 +106,7 @@
 =ValidWordsFinal /\{!InitialEqpromTrochee,  @{sigmaprwdinitial, sigmaprwd}, !btwgoodIambgoodTrochee, !ClashInitial, !ClashGoodTrocheeIamb}
 
 
-################## NEW stress assignment (in progress) ###########################
+################## NEW stress assignment ###########################
 
 #Word-level primary stress condition: only one primary stress in a word
 
@@ -155,7 +155,7 @@
 =haveprimary @{sigmaprwdinitial, */\{sigmaprwd,\/{trocheehead, iambhead}}, \/{trocheeprimary, iambprimary}, */\{sigmaprwd, \/{trocheehead, iambhead}},*unstressed}
 =haveprimaryStrict @{sigmaprwdinitial, */\{sigmaprwdinitial,\/{trocheehead, iambhead}}, \/{trocheeprimaryStrict, iambprimary}, */\{sigmaprwd, \/{trocheehead, iambhead}}, *unstressed}
 
-#This predicate includes all the constraints for the stress assginment 
+#This predicate includes all the constraints for the stress assignment 
 =newprimary /\{notwosameprimary, notwodiffprimary, -notwodiffprimary, prominentA, prominentB, prominentC, prominencecontext, haveprimary}
 
 # Restricts trochee-headed primaries to promleft configurations
@@ -191,10 +191,10 @@
 =sameLevelSecondaryC /\{~<C, Cs>, ~<c, Cs>}
 =sameLevelSecondaryB /\{~<B, Bs>, ~<b, Bs>}
 =sameLevelSecondaryA /\{~<A, As>, ~<a, As>}
-=bansameLevelSecondary /\{penultExtraA, penultExtraB, penultExtraC}
+=bansameLevelSecondary /\{sameLevelSecondaryC, sameLevelSecondaryB, sameLevelSecondaryA}
 
 =EvenNonEqTwoFeet /\{ValidWordsFinal, @{sigmaprwdinitial, exactlyTwoFeet}, bansameLevelSecondary}
-=EvenNonEqThreeOrMoreFeet /\{ValidWordsFinal, @{sigmaprwdinitial, threeOrMoreFeet}}
+=EvenNonEqThreeOrMoreFeet /\{ValidWordsFinal, @{sigmaprwdinitial, threeOrMoreFeet}, bansameLevelSecondary}
 =EvenNonEq \/{EvenNonEqTwoFeet, EvenNonEqThreeOrMoreFeet}
 
 =EvenNonEqStress /\{newprimary, EvenNonEq}

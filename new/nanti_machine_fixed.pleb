@@ -1,0 +1,215 @@
+# This file provides a way to think about the stress pattern of Nanti
+# with a finite state acceptor.
+
+# This part defines the symbols. Note a capital letter indicates a
+# stressed syllable and a lowercase letter indicates an unstressed
+# one.
+
+=E{/E} =e{/e} =Es{/Es}
+=D{/D} =d{/d} =Ds{/Ds}
+=C{/C} =c{/c} =Cs{/Cs}
+=B{/B} =b{/b} =Bs{/Bs}
+=A{/A} =a{/a} =As{/As}
+
+=P{/P} =p{/p}
+
+# The following defines natural classes by weight/prominence. So A/a
+# are the least prominent syllables and L/l are the most prominent
+# syllables.
+
+=w01 \/{%||%<A>, %||%<As>, %||%<a>}
+=w02 \/{%||%<B>, %||%<Bs>, %||%<b>}
+=w03 \/{%||%<C>, %||%<Cs>, %||%<c>}
+=w04 \/{%||%<D>, %||%<Ds>, %||%<d>}
+=w05 \/{%||%<E>, %||%<Es>, %||%<e>}
+
+# Here are natural classes for stressed symbols and unstressed symbols.
+# (Plebby will not recognize expressions split across multiple lines.)
+
+=primary \/{%||%<As>, %||%<Bs>, %||%<Cs>, %||%<Ds>, %||%<Es>}
+=head \/{%||%<A>, %||%<B>, %||%<C>, %||%<D>, %||%<E>}
+=unstressed \/{%||%<a>, %||%<b>, %||%<c>, %||%<d>, %||%<e>}
+
+# Trochees and iambic disyllabic feet are defined generally.
+
+=promleft \/{@{w05, w04}, @{w05, w03}, @{w05, w02}, @{w05, w01}, @{w04, w03}, @{w04, w02}, @{w04, w01}, @{w03, w02}, @{w03, w01}, @{w02, w01}}
+=promright -promleft
+=promeq \/{@{w05, w05}, @{w04, w04}, @{w03, w03}, @{w02, w02}, @{w01, w01}}
+
+=trochee @{\/{head, primary}, unstressed}
+=iamb @{unstressed, \/{head, primary}}
+
+=goodTrochee /\{promleft, trochee}
+=badTrochee /\{promright, trochee}
+=goodIamb /\{promright, iamb}
+=badIamb /\{promleft, iamb}
+=eqpromTrochee /\{promeq, trochee}
+=eqpromIamb /\{promeq, iamb}
+
+# The last part looks like this.
+
+=ending @{%||%<p>, *unstressed}
+
+# Next we want to build an acceptor using `goodTrochee`, `goodIamb`, `eqpromTrochee`, and `eqpromIamb`.
+
+#All the possible combinations of feet in a word (the so-called Sigma-star)
+# for the rest of the cases where there are two or more feet in a prosodic word boundary
+
+=footprwd \/{eqpromTrochee, goodTrochee, goodIamb, eqpromIamb}
+=sigmaprwd *footprwd
+
+=sigmaprwdinitial @{%||%<P>, *footprwd}
+
+# constraint1: no eqpromTrochee between goodIamb and goodTrochee
+=constraint1 @{%||%<P>, *footprwd, goodIamb, eqpromTrochee, goodTrochee}
+
+# constraint2: no initial eqpromTrochee followed by goodIamb
+=constraint2 @{%||%<P>, eqpromTrochee, goodIamb}
+
+=FinalIamb @{sigmaprwdinitial, \/{goodIamb, eqpromIamb}, %||%<p>}# need to put this somewhere 
+
+# constraint3: no eqpromIamb followed by eqpromTrochee and vice versa 
+
+# Explicitly isolate the two banned adjacent combinations:
+=badCombo1 @{%||%<P>, *footprwd, eqpromIamb, eqpromTrochee, eqpromTrochee}
+=badCombo2 @{%||%<P>, *footprwd, eqpromTrochee, eqpromIamb, eqpromTrochee}
+
+=constraint3 \/{badCombo1, badCombo2}
+#=constraint3 @{%||%<P>, *footprwd, \/{@{eqpromIamb, eqpromTrochee}, @{eqpromTrochee, eqpromIamb}}, eqpromTrochee}
+
+# constraint4: no initial eqpromIamb followed by goodTrochee
+=constraint4 @{%||%<P>, eqpromIamb, goodTrochee}
+
+# constraint5: no initial eqpromTrochee of primary stress
+=constraint5 @{%||%<P>, /\{eqpromTrochee, @{primary,unstressed}}} 
+
+# constraint6: no eqpromTrochee preceded by goodIamb
+# NOTE: constraint6 is vacuous inside `validwords`: strings of `validwords`
+# are exactly P + feet (an even number of syllables), while this pattern
+# ends in one extra stray unstressed syllable (odd length). It is kept here
+# for documentation, but the operative version is constraint7 below, which
+# includes the word-final boundary and is applied to validwords_odd.
+=constraint6 @{%||%<P>, *footprwd, goodIamb, eqpromTrochee, unstressed}
+
+# constraint7: no word-final goodIamb + eqpromTrochee + stray unstressed
+# 0707 FIX: tail changed from bare %||%<p> to `ending` so that words with
+# echo syllables after p (e.g. "... p b") are also caught.
+=constraint7 @{%||%<P>, *footprwd, goodIamb, eqpromTrochee, unstressed, ending}
+
+=validwords /\{@{sigmaprwdinitial, sigmaprwd}, !constraint1, !constraint2, !constraint3, !constraint4, !constraint5, !constraint6}
+=validwords_O /\{@{sigmaprwdinitial, sigmaprwd, unstressed}, !constraint1, !constraint2, !constraint3, !constraint4, !constraint5, !constraint6, !constraint7}
+=validwords_even /\{@{sigmaprwdinitial, sigmaprwd, trochee}, !constraint1, !constraint2, !constraint3, !constraint4, !constraint5, !constraint6}
+
+=validwords_odd @{validwords, unstressed, ending}
+
+=validwords_even1 @{validwords, trochee, ending}
+
+=validwords_even2 @{validwords, unstressed, unstressed, ending}
+
+###### stress: word-level ######
+# Word-level prominence hieararchy: A < D < B < E < C
+
+# Explicitly regrouping the 5 tiers into the new word-level sonority tracks
+=headC \/{%||%<C>, %||%<Cs>}
+=headE \/{%||%<E>, %||%<Es>}
+=headB \/{%||%<B>, %||%<Bs>}
+=headD \/{%||%<D>, %||%<Ds>}
+=headA \/{%||%<A>, %||%<As>}
+
+# Culminativity: a single word can only have exactly one primary stress
+=notwosameprimary /\{~<As, As>, ~<Bs, Bs>, ~<Cs, Cs>, ~<Ds, Ds>, ~<Es, Es>} 
+=notwodiffprimary /\{~<As, Bs>, ~<As, Cs>, ~<As, Ds>, ~<As, Es>, ~<Bs, Cs>, ~<Bs, Ds>, ~<Bs, Es>, ~<Cs, Ds>, ~<Cs, Es>,  ~<Ds, Es>}
+
+=culminativity /\{notwosameprimary, notwodiffprimary, -notwodiffprimary}
+
+# Tier A wins: No D, B, E, or C heads allowed anywhere
+=winAForward /\{~<As, D>, ~<As, Ds>, ~<As, B>, ~<As, Bs>, ~<As, E>, ~<As, Es>, ~<As, C>, ~<As, Cs>}
+=winA /\{winAForward, -winAForward}
+
+# Tier D wins: No B, E, or C heads allowed anywhere
+=winDForward /\{~<Ds, B>, ~<Ds, Bs>, ~<Ds, E>, ~<Ds, Es>, ~<Ds, C>, ~<Ds, Cs>}
+=winD /\{winDForward, -winDForward}
+
+# Tier B wins: No E or C heads allowed anywhere
+=winBForward /\{~<Bs, E>, ~<Bs, Es>, ~<Bs, C>, ~<Bs, Cs>}
+=winB /\{winBForward, -winBForward}
+
+# Tier E wins: No C heads allowed anywhere
+=winEForward /\{~<Es, C>, ~<Es, Cs>}
+=winE /\{winEForward, -winEForward}
+
+# Tier C wins: Already the highest tier
+=winC *winEForward  # Safely matches everything as a placeholder
+
+# The Tie-Breaker: Enforce "Rightmost Peak" 
+# (Bans a primary stress if an identical unpromoted head sits to its right)
+=rightmostC ~<Cs, C>
+=rightmostE ~<Es, E>
+=rightmostB ~<Bs, B>
+=rightmostD ~<Ds, D>
+=rightmostA ~<As, A>
+
+=tieBreaker /\{rightmostC, rightmostE, rightmostB, rightmostD, rightmostA}
+=hierarchy /\{winA, winD, winB, winE, winC, tieBreaker}
+
+=wordLevelStress /\{culminativity, hierarchy}
+
+=nopenultprom_As /\{~<As, b>, ~<As, c>, ~<As, d>, ~<As, e>}
+=nopenultprom_Bs /\{~<Bs, c>, ~<Bs, d>, ~<Bs, e>}
+=nopenultprom_Cs /\{~<Cs, d>, ~<Cs, e>}
+=nopenultprom_Ds /\{~<Ds, e>}
+
+=nopenultprom /\{nopenultprom_As, nopenultprom_Bs, nopenultprom_Cs, nopenultprom_Ds}
+
+=penult_B /\{~<B, Bs a p>, ~<B, Bs b p>}  
+=penult_C /\{~<C, Cs a p>, ~<C, Cs b p>, ~<C, Cs c p>}
+=penult_D /\{~<D, Ds a p>, ~<D, Ds b p>, ~<D, Ds c p>, ~<D, Ds d p>}
+=penult_E /\{~<E, Es a p>, ~<E, Es b p>, ~<E, Es c p>, ~<E, Es d p>, ~<E, Es e p>}
+    
+=penult /\{penult_B, penult_C, penult_D, penult_E}
+
+=wordLevelStress_even /\{culminativity, hierarchy, nopenultprom, penult}
+
+# words with only one foot
+=singlefoot \/{goodTrochee, eqpromTrochee, badTrochee}
+=oneWordPrimary \/{/\{@{primary, unstressed}, singlefoot}, /\{@{unstressed, primary}, singlefoot}}
+=oneWordFinal @{%||%<P>, oneWordPrimary, ending}
+
+# words with even number syllables with exhaustive footing
+=Evenwordsfinal1 /\{@{validwords_even, ending}, wordLevelStress_even}
+
+# words with even number syllable with no exhaustive footing
+
+=Evenwords /\{validwords, wordLevelStress_even}
+=Evenwordsfinal3 @{Evenwords, unstressed, unstressed, ending}
+
+# words with odd number syllables
+
+=Oddwordsfinal /\{validwords_odd, wordLevelStress}
+
+#06/19: The reason why word0003 returns false even though @{validwords, unstressed} and wordLevelStress return true is that the wordLevelStress does not contain 'P'..? or something to do with the left word edge. -solved
+
+# words with three syllables : only word-level applies: e.g., word089
+# A<D<B<E<C
+=wordpromleft \/{@{w03, w05}, @{w03, w02}, @{w03, w04}, @{w03, w01}, @{w05, w02}, @{w05, w04}, @{w05, w01}, @{w02, w04}, @{w02, w01}, @{w04, w01}}
+=wordpromright -wordpromleft
+
+=wordgoodTrochee /\{wordpromleft, @{primary, unstressed}}
+=wordgoodIamb /\{wordpromright, @{unstressed, primary}}
+
+=Oddwordsfinal2 @{%||%<P>, \/{wordgoodTrochee, wordgoodIamb}, unstressed, ending}
+
+# words with four syllables : only word-level applies: e.g., word091
+
+=wnopenultprom_As /\{~<As, b>, ~<As, c>, ~<As, d>, ~<As, e>}
+=wnopenultprom_Ds /\{~<Ds, e>, ~<Ds, b>, ~<Ds, c>}
+=wnopenultprom_Bs /\{~<Bs, c>, ~<Bs, e>}
+=wnopenultprom_Es ~<Es, c>
+=wnopenultprom /\{wnopenultprom_As, wnopenultprom_Bs, wnopenultprom_Es, wnopenultprom_Ds}
+
+=evenwordsone /\{@{\/{wordgoodTrochee, wordgoodIamb}, unstressed}, wnopenultprom}
+=Evenwordsfinal4 @{%||%<P>, evenwordsone, unstressed, ending}
+
+=validwordsfinal /\{\/{oneWordFinal, Evenwordsfinal1, Evenwordsfinal3, Evenwordsfinal4, Oddwordsfinal, Oddwordsfinal2}, !constraint7}
+
+#0707: fixed word068x. constraint6 can never match inside validwords (validwords strings are P + feet only, even-length; constraint6's pattern ends in a stray unstressed syllable, odd-length), so goodIamb + eqpromTrochee + unstressed leaked through Oddwordsfinal. Fix: constraint7 (tail broadened from p to ending) is intersected once at the top level. Of all 95 test words only word068x is in constraint7, so no trueword can be affected.

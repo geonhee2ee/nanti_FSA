@@ -97,7 +97,7 @@
 
 =truewords1 \/{word001, word002, word003, word004, word005}  
 =truewords2 \/{word006, word007, word008, word009}  
-=truewords3 \/{word012, word015, word016, word017}  
+=truewords3 \/{word012, word015, word016, word017}  #word012: penult 'I rested' 
 =truewords4 \/{word018, word019, word022, word024, word026}  
 =truewords5 \/{word027, word031, word032, word033, word051}  
 =truewords6 \/{word052, word053, word065, word068, word069}  

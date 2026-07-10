@@ -1,0 +1,24 @@
+Last login: Wed Jul  8 10:42:09 on ttys000
+(base) geonhee@igeonhuis-MacBook-Air nanti % plebby
+plebby, version 1.3: https://hackage.haskell.org/package/language-toolkit
+:help for help
+> :import nanti_machine_fixed-AC.pleb
+> :help
+> :help commands
+> :isSL validwordsfinal
+False
+> :isSP validwordsfinal
+False
+> :isLT validwordsfinal
+False
+> :isLPT validwordsfinal
+False
+> :isTSL validwordsfinal
+False
+> :isTLT validwordsfinal
+False
+> :isTLPT validwordsfinal
+False
+> :isSF validwordsfinal
+True
+> 

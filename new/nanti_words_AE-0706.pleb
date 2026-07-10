@@ -1,0 +1,147 @@
+
+=E{/E} =e{/e} =Es{/Es}
+=D{/D} =d{/d} =Ds{/Ds}
+=C{/C} =c{/c} =Cs{/Cs}
+=B{/B} =b{/b} =Bs{/Bs}
+=A{/A} =a{/a} =As{/As}
+=P{/P} =p{/p} #P (beginning) and  p (ending) is the prosodic boundary, and s marks the primary stress
+
+# 0706 words including D, E were added from nanti_words_AC-0623.pleb and excluded word010-12 as it does not match with the description from the paper
+#=word066 %||%< b  Es  c  p b > #True
+#=word067 %||%< Cs  d E c  p c >  #False--highlighted: although foot-level should be  c Ds, the wordlevel stress is Cs d, which does not correspond to the description --thus excluded
+#=word083 %||%< e  Es  b p> #True
+#=word086 %||%< E  a  Cs  b p> #True
+#=word088 %||%< D  a  Cs  b  p c > #True
+#=word089 %||%< d  Bs  b p> #false-highlighted: although foot-level should be  D b, the word level stress is d B> fixed as true
+#=word091 %||%< e  Cs  c c p> #false #False--highlighted: although foot-level should be  E c, the word level stress is e Cs > fixed as true
+#=word096 %||%< b  E  b  Cs  c  b  p c > #True
+#=word097 %||%< D  a  Cs  b  p c > #true
+
+# words that should return true in machine
+=word001 %||%< P Cs  c p>  
+=word002 %||%< P As  b p>  
+=word003 %||%< P b  Bs  b  p b >  
+=word004 %||%< P  Bs  b  p b >  
+=word005 %||%< P  a  A  a  As  b p>  
+=word006 %||%< P b  B  b  Bs  b  p b > 
+=word007 %||%< P a  A  a  As  a b p>  
+=word008 %||%< P B  b  A  a  Cs  c p>  
+=word009 %||%< P B  b  Cs  b c p b >  
+=word015 %||%< P C  a b Cs  b  p b >  
+=word016 %||%< P C  a a Cs  b  p b >  
+=word017 %||%< P B  a b Cs  b  p b >  
+=word018 %||%< P B  a b Cs  b  p b >  
+=word019 %||%< P b  C  Cs  b  a p>   
+=word022 %||%< P a  B  Cs  b  p c > 
+=word024 %||%< P a  B  Cs  b b p b >  
+=word026 %||%< P B  b  Cs  b  p b > 
+=word027 %||%< P B  b  Bs  a a p b >  
+=word031 %||%< P B  b  Cs  b  p b > 
+=word032 %||%< P B  b  Cs  b  p a > 
+=word033 %||%< P b  Bs  b  p b >  
+=word051 %||%< P a  Cs  a  A  a p> 
+=word052 %||%< P a  B  a  Cs  b  a p>  
+=word053 %||%< P b  B  a  Cs  b p>  
+=word065 %||%< P A  a  Bs  a b p> 
+=word066 %||%< P b  Es  c  p b > #True
+=word068 %||%< P a  B  b  Bs  b p>  
+=word069 %||%< P c  C  b  Cs  b  p c >  
+=word074 %||%< P B  b  Cs  b p> 
+=word075 %||%< P Cs  b b p b >  
+=word076 %||%< P Cs  b  a p>  
+=word077 %||%< P Cs  b b p>  
+=word078 %||%< P Cs  a c c p> 
+=word079 %||%< P A  a  Bs  b p> 
+=word080 %||%< P b  Bs  b  a  p b >  
+=word081 %||%< P a  Bs  b  a p>  
+=word083 %||%< P e  Es  b p> 
+=word086 %||%< P E  a  Cs  b p> 
+=word088 %||%< P D  a  Cs  b  p c > 
+=word089 %||%< P d  Bs  b p>
+=word091 %||%< P e  Cs  c c p>
+=word092 %||%< P b  Bs  b  a  p b >  
+=word093 %||%< P a  B  Cs  b c c p>  
+=word094 %||%< P A  a  Cs  a c b  p a >  
+=word095 %||%< P Cs  a b B  c c p> 
+=word096 %||%< P b  E  b  Cs  c  b  p c > 
+=word097 %||%< P D a  Cs  b  p c >
+=word104 %||%< P a  B  Cs  c p> 
+
+=truewords \/{word001, word002, word003, word004, word005, word006, word007, word008, word009, word015, word016, word017, word018, word019, word022, word024, word026,word027, word031, word032, word033, word051, word052, word053, word065, word068, word069, word074, word075, word076, word077, word078, word079, word080, word081, word083, word086, word088, word089, word091, word092, word093, word094, word095, word096, word097, word104}
+
+=truewords1 \/{word001, word002, word003, word004, word005}  
+=truewords2 \/{word006, word007, word008, word009, word015}  
+=truewords3 \/{word016, word017, word018, word019, word022}  
+=truewords4 \/{word024, word026, word027, word031, word032}  
+=truewords5 \/{word033, word051, word052, word053, word065}  
+=truewords6 \/{word068, word069, word074, word075, word076}  
+=truewords7 \/{word077, word078, word079, word080, word081}  
+=truewords8 \/{word083, word086, word088, word089, word091, word092}  
+=truewords9 \/{word093, word094, word095, word096, word097, word104}   
+
+# words that should return true in ~machine 
+=word001x %||%< P c  Cs p>  
+=word002x %||%< P a  Bs p> 
+=word003x %||%< P Bs  b  b  p b > 
+=word004x %||%< P b  b  Bs  p b > 
+=word005x %||%< P a  As  a  A  b p> 
+=word006x %||%< P b  Bs  b  B  b  p b > 
+=word007x %||%< P a  As  a  A  a b p> 
+=word008x %||%< P b  B  A  a  Cs  c p>  #true ?? 06/19: i don't understand this: it outputs false for !constraint3, but it returns true for validwords.. 06/22: it was because while the first two feet is true for !constraint3, the second two feet (A a Cs c) is not true, so that's why it returns true. Now it is fixed by adding eqpromTrochee at the end of the constraint3. 0623: returning false again 
+=word009x %||%< P B  b  c  Bs c p b > 
+=word010x %||%< P b  Cs  b  B  C  c p>
+=word011x %||%< P B  c  b  B  Cs  a p>
+=word012x %||%< P C  b  a  B  a  Bs  C  b p> 
+=word015x %||%< P Cs  a b C  b  p b > 
+=word016x %||%< P C  a As c  b  p b > 
+=word017x %||%< P b  As b C  b  p b > 
+=word018x %||%< P B  a Bs Cs  b  p b >  
+=word019x %||%< P b  Cs  C  b  a p> 
+=word022x %||%< P A  b  Cs  b  p c >  
+=word024x %||%< P a  B  c  B b p b >  
+=word026x %||%< P b  B  Cs  b  p b >  
+=word027x %||%< P Bs  b  B  a a p b > 
+=word031x %||%< P B  b  c  Bs  p b > 
+=word032x %||%< P Bs  b  C  b  p a > 
+=word033x %||%< P Bs  b  b  p b > 
+=word051x %||%< P a  C  a  As  a p> 
+=word052x %||%< P a  Bs  a  C  b  a p>  
+=word053x %||%< P B  b  a  Cs  b p>  
+=word065x %||%< P a  A  Bs  a b p> 
+=word066x %||%< P b  E  Cs  p b > 
+=word067x %||%< P C  d Es c  p c >   
+=word068x %||%< P a  B  Bs  b  b p>   #false
+=word069x %||%< P c  C  Bs  c  b  p c >  
+=word074x %||%< P b  B  Cs  b p>  
+=word075x %||%< P Cs  b B p b >  
+=word076x %||%< P c  Bs a p>  
+=word077x %||%< P Cs  b B p>  
+=word078x %||%< P C  a Cs c p>  
+=word079x %||%< P a  As  Bs  b p>  
+=word080x %||%< P b  Bs  b  A  p b >  
+=word081x %||%< P a  B  Bs  a p>  
+=word083x %||%< P Es  e  b p> 
+=word086x %||%< P Es  a  C  b p> 
+=word088x %||%< P Ds  a  C  b  p c > 
+=word089x %||%< P d b  Bs p>
+=word091x %||%< P e C Cs c p> 
+=word092x %||%< P B  b  Bs  a  p b >  
+=word093x %||%< P a  B  Cs  B c c p>  
+=word094x %||%< P As  a  Cs  a c b  p a >  
+=word095x %||%< P C  a b B  Cs c p> 
+=word096x %||%< P b  Es  b  C  c  b  p c > 
+=word097x %||%< P D  a  c  Bs  p c >
+=word104x %||%< P A  b  Cs  c p>  
+
+
+=falsewords \/{word001x, word002x, word003x, word004x, word005x, word006x, word007x ,word008x, word009x, word015x, word016x, word017x, word018x, word019x, word022x, word024x, word026x, word027x, word031x, word032x, word033x, word051x, word052x, word053x, word065x, word068x, word069x, word074x, word075x, word076x, word077x, word078x, word079x, word080x, word081x, word083x, word086x, word088x, word089x, word091x, word092x, word093x, word094x, word095x, word096x, word097x, word104x} 
+
+=falsewords1 \/{word001x, word002x, word003x, word004x, word005x}  #true
+=falsewords2 \/{word006x, word007x, word008x, word009x, word015x}  #true
+=falsewords3 \/{word016x, word017x, word018x, word019x, word022x}  #true
+=falsewords4 \/{word024x, word026x, word027x, word031x, word032x}  #true
+=falsewords5 \/{word033x, word051x, word052x, word053x, word065x}  #true
+=falsewords6 \/{word068x, word069x, word074x, word075x, word076x}  #false 068
+=falsewords7 \/{word077x, word078x, word079x, word080x, word081x} #true
+=falsewords8 \/{word083x, word086x, word088x, word089x, word091x, word092x}  #true
+=falsewords9 \/{word093x, word094x, word095x, word096x, word097x, word104x}  #true
